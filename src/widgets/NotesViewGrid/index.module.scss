@@ -1,0 +1,16 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, 250px);
+    gap: 5px;
+}
+
+.actions {
+    display: flex;
+    gap: 4px;
+}
+
+.createCardButton {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
