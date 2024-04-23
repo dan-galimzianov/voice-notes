@@ -16,15 +16,15 @@ type MutateNoteForm = Omit<Note, 'id'>
 
 export const MutateNoteDrawer = ({renderTriggerItem, noteId = ''}: MutateNoteDrawerProps) => {
     const [isOpen, setIsOpen] = useState(false)
-    const note = useAppSelector(getNoteById(noteId))
+    const noteToUpdate = useAppSelector(getNoteById(noteId))
     const methods = useForm<MutateNoteForm>({
         mode: 'onChange', 
-        defaultValues: note
+        defaultValues: noteToUpdate
     })
     const dispatch = useAppDispatch();
 
     const onSubmit = (note: MutateNoteForm) => {
-        dispatch(note ?  updateNote({...note as MutateNoteForm, id: noteId}) : createNote(note))
+        dispatch(noteToUpdate ?  updateNote({...note as MutateNoteForm, id: noteId}) : createNote(note))
         setIsOpen(false)
         methods.reset()
     }
@@ -41,12 +41,12 @@ export const MutateNoteDrawer = ({renderTriggerItem, noteId = ''}: MutateNoteDra
     return (
         <>
             {renderTriggerItem && <div onClick={onOpen}>{renderTriggerItem()}</div>}
-            <Drawer title={note ? 'Edit note' : 'Create note'} onClose={onClose} open={isOpen}>
+            <Drawer title={noteToUpdate ? 'Edit note' : 'Create note'} onClose={onClose} open={isOpen}>
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onSubmit)}>
                         <Input name="title" placeholder="Title" required/>
                         <VoiceControlTextArea name="body" key={String(isOpen)}/> {/* hack) */}
-                        <Button type="primary" htmlType="submit">{note ? 'Update' : 'Create'}</Button>
+                        <Button type="primary" htmlType="submit">{noteToUpdate ? 'Update' : 'Create'}</Button>
                     </form>
                 </FormProvider>
             </Drawer>
